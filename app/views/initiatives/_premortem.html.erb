@@ -1,0 +1,84 @@
+<%# 1. Imagined Failure Date banner %>
+<div class="card failure-date-banner mb-4">
+  <div class="card-body text-center py-4">
+    <p class="text-body-secondary mb-1 small">By this date, this initiative has failed because&hellip;</p>
+    <div class="display-6 fw-bold" style="color: var(--accent);">
+      <%= premortem.imagined_failure_date&.strftime("%B %-d, %Y") %>
+    </div>
+  </div>
+</div>
+
+<%# 2. Failure modes accordion %>
+<h5 class="mb-3">Top 5 Failure Modes</h5>
+<div class="accordion mb-4" id="failure-modes-<%= premortem.id %>">
+  <% premortem.failure_modes.each do |fm| %>
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button <%= fm.rank == 1 ? '' : 'collapsed' %>"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#fm-<%= fm.id %>"
+                aria-expanded="<%= fm.rank == 1 ? 'true' : 'false' %>">
+          <span class="fw-semibold me-3 text-body-secondary">#<%= fm.rank %></span>
+          <%= fm.statement %>
+          <span class="badge <%= fm.severity_badge_class %> ms-3 flex-shrink-0"><%= fm.severity.capitalize %></span>
+        </button>
+      </h2>
+      <div id="fm-<%= fm.id %>"
+           class="accordion-collapse collapse <%= fm.rank == 1 ? 'show' : '' %>"
+           data-bs-parent="#failure-modes-<%= premortem.id %>">
+        <div class="accordion-body">
+          <p class="fst-italic text-body-secondary mb-3">
+            <strong>Assumption that breaks:</strong> <%= fm.assumption %>
+          </p>
+          <p class="small fw-semibold text-body-secondary mb-2">Early Warning Signals</p>
+          <ul class="list-unstyled">
+            <% fm.warning_signals.each do |ws| %>
+              <li class="mb-2">
+                <span class="fw-semibold"><%= ws.signal %></span>
+                <div class="small text-body-secondary"><em>How to observe:</em> <%= ws.measurement_method %></div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<%# 3. Preventive actions checklist %>
+<h5 class="mb-3">Preventive Actions This Week</h5>
+<div class="list-group mb-4">
+  <% premortem.preventive_actions.each do |action| %>
+    <%= render "preventive_action", action: action %>
+  <% end %>
+</div>
+
+<%# 4. Avoided truth callout %>
+<div class="card avoided-truth-card mb-4">
+  <div class="card-body">
+    <p class="small text-body-secondary fw-semibold mb-2">The Avoided Truth</p>
+    <p class="fst-italic mb-2"><%= premortem.avoided_truth %></p>
+    <p class="small text-body-secondary mb-0">
+      These are AI-generated hypotheses, not predictions. Treat them as starting points for your team's discussion, not conclusions.
+    </p>
+  </div>
+</div>
+
+<%# 5. Reflection %>
+<div id="premortem-reflection-<%= premortem.id %>">
+  <%= render "reflection", premortem: premortem %>
+</div>
+
+<%# 6. Raw response toggle %>
+<div class="mt-4">
+  <button class="btn btn-sm btn-outline-secondary"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#raw-response-<%= premortem.id %>">
+    Show raw response (what the AI actually returned)
+  </button>
+  <div id="raw-response-<%= premortem.id %>" class="collapse mt-2">
+    <pre class="p-3 border rounded small text-body-secondary" style="overflow-x: auto; white-space: pre-wrap;"><%= premortem.gemini_raw %></pre>
+  </div>
+</div>

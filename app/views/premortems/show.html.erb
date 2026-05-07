@@ -1,0 +1,19 @@
+<div class="mb-3">
+  <%= link_to "← Back to #{@initiative.name}", initiative_path(@initiative), class: "small" %>
+</div>
+
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h1 class="h3 mb-1">Premortem</h1>
+    <p class="text-body-secondary small">Recorded <%= @premortem.created_at.strftime("%B %-d, %Y") %></p>
+  </div>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <p class="text-body-secondary small fw-semibold mb-1">Initiative</p>
+    <p class="mb-0 fw-semibold"><%= @initiative.name %></p>
+  </div>
+</div>
+
+<%= render "initiatives/premortem", premortem: @premortem %>

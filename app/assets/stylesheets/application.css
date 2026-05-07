@@ -1,0 +1,63 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css");
+
+:root {
+  --accent: #eab308;
+  --accent-hover: #ca8a04;
+
+  /* Feed accent into Bootstrap's primary theme layer */
+  --bs-primary: #eab308;
+  --bs-primary-rgb: 234, 179, 8;
+  --bs-link-color: #eab308;
+  --bs-link-hover-color: #ca8a04;
+}
+
+/* .btn-primary — all states */
+.btn-primary {
+  --bs-btn-color: #000;
+  --bs-btn-bg: #eab308;
+  --bs-btn-border-color: #eab308;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #ca8a04;
+  --bs-btn-hover-border-color: #ca8a04;
+  --bs-btn-focus-shadow-rgb: 234, 179, 8;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #b45309;
+  --bs-btn-active-border-color: #b45309;
+  --bs-btn-disabled-color: #000;
+  --bs-btn-disabled-bg: #eab308;
+  --bs-btn-disabled-border-color: #eab308;
+}
+
+/* .btn-outline-primary — all states */
+.btn-outline-primary {
+  --bs-btn-color: #eab308;
+  --bs-btn-border-color: #eab308;
+  --bs-btn-hover-color: #000;
+  --bs-btn-hover-bg: #eab308;
+  --bs-btn-hover-border-color: #eab308;
+  --bs-btn-focus-shadow-rgb: 234, 179, 8;
+  --bs-btn-active-color: #000;
+  --bs-btn-active-bg: #eab308;
+  --bs-btn-active-border-color: #eab308;
+  --bs-btn-disabled-color: #eab308;
+  --bs-btn-disabled-bg: transparent;
+  --bs-btn-disabled-border-color: #eab308;
+}
+
+/* Avoided-truth callout */
+.avoided-truth-card {
+  border-left: 4px solid var(--accent);
+  padding-left: 1.25rem;
+}
+
+/* Preventive action — started state */
+.preventive-started {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Imagined failure date banner */
+.failure-date-banner {
+  background: linear-gradient(135deg, rgba(234, 179, 8, 0.12), rgba(202, 138, 4, 0.06));
+  border: 1px solid rgba(234, 179, 8, 0.3);
+}

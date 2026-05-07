@@ -1,0 +1,23 @@
+<div id="preventive-action-<%= action.id %>"
+     class="list-group-item d-flex align-items-start gap-3">
+  <%= button_to toggle_preventive_action_path(action),
+      method: :patch,
+      class: "btn p-0 border-0 mt-1 flex-shrink-0",
+      form: { data: { turbo_stream: true } } do %>
+    <% if action.started %>
+      <span class="fs-5">☑</span>
+    <% else %>
+      <span class="fs-5 text-body-secondary">☐</span>
+    <% end %>
+  <% end %>
+
+  <div class="flex-grow-1 <%= 'preventive-started' if action.started %>">
+    <%= action.description %>
+  </div>
+
+  <% if action.high_leverage? %>
+    <span class="badge bg-warning text-dark flex-shrink-0" title="High leverage">⚡ <%= action.effectiveness_to_effort %>/5</span>
+  <% else %>
+    <span class="badge bg-secondary flex-shrink-0"><%= action.effectiveness_to_effort %>/5</span>
+  <% end %>
+</div>

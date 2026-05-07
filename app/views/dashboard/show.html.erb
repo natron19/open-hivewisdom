@@ -1,0 +1,43 @@
+<div class="row g-4">
+
+  <div class="col-md-8">
+    <h5 class="mb-3">Recent Initiatives</h5>
+    <% if current_user.initiatives.any? %>
+      <div class="list-group">
+        <% current_user.initiatives.order(created_at: :desc).limit(10).each do |initiative| %>
+          <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <div>
+              <%= link_to initiative.name, initiative_path(initiative), class: "fw-semibold text-decoration-none stretched-link" %>
+              <div class="small text-body-secondary mt-1">
+                <%= initiative.time_horizon.humanize %> horizon &middot;
+                <%= pluralize(initiative.premortems.count, "premortem") %>
+              </div>
+            </div>
+            <span class="badge bg-secondary ms-3"><%= initiative.time_horizon.gsub("_", " ") %></span>
+          </div>
+        <% end %>
+      </div>
+      <%= link_to "View all initiatives →", initiatives_path, class: "d-block mt-3 small" %>
+    <% else %>
+      <div class="alert alert-secondary">
+        No initiatives yet. Use the card on the right to run your first premortem.
+      </div>
+    <% end %>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card border-0 bg-body-secondary h-100">
+      <div class="card-body">
+        <h5 class="card-title">New Initiative</h5>
+        <p class="card-text text-body-secondary small mb-3">Before you start, have these ready:</p>
+        <ul class="small text-body-secondary mb-4">
+          <li>A one-paragraph definition of what success looks like</li>
+          <li>A description of where the work stands right now</li>
+          <li>Context on the team and any recent friction</li>
+        </ul>
+        <%= link_to "Run a Premortem", new_initiative_path, class: "btn btn-primary w-100" %>
+      </div>
+    </div>
+  </div>
+
+</div>

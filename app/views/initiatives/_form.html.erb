@@ -1,0 +1,62 @@
+<%= form_with model: initiative, class: "needs-validation" do |f| %>
+  <% if initiative.errors.any? %>
+    <div class="alert alert-danger">
+      <strong>Please fix these errors:</strong>
+      <ul class="mb-0 mt-1">
+        <% initiative.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= f.label :name, "Initiative Name", class: "form-label fw-semibold" %>
+    <%= f.text_field :name, class: "form-control", placeholder: "e.g. Quarterly roadmap review with the engineering team" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :success_definition, "What does success look like?", class: "form-label fw-semibold" %>
+    <%= f.text_area :success_definition, rows: 4, class: "form-control",
+        placeholder: "In one paragraph, describe the end state you are aiming for." %>
+  </div>
+
+  <div class="mb-4" data-controller="segmented-button-group">
+    <%= f.label :time_horizon, "Time Horizon", class: "form-label fw-semibold d-block" %>
+    <div class="btn-group" role="group" aria-label="Time horizon">
+      <% Initiative::TIME_HORIZONS.each do |horizon| %>
+        <button type="button"
+                class="btn btn-outline-secondary <%= 'active' if initiative.time_horizon == horizon %>"
+                data-value="<%= horizon %>"
+                data-action="click->segmented-button-group#select">
+          <%= horizon.gsub("_", " ").capitalize %>
+        </button>
+      <% end %>
+    </div>
+    <%= f.hidden_field :time_horizon, data: { segmented_button_group_target: "field" },
+        value: initiative.time_horizon.presence || "3_months" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :current_state, "Where is this work today?", class: "form-label fw-semibold" %>
+    <%= f.text_area :current_state, rows: 4, class: "form-control",
+        placeholder: "Describe where the initiative stands right now: what has been done, what is blocked, what is unclear." %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :team_context, "Who is involved?", class: "form-label fw-semibold" %>
+    <%= f.text_area :team_context, rows: 3, class: "form-control",
+        placeholder: "Describe the team: roles, history, any known friction. Avoid naming specific individuals." %>
+    <div class="form-text text-body-secondary">
+      Avoid pasting names or identifying details of specific team members. Describe roles instead.
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit initiative.new_record? ? "Save Initiative" : "Update Initiative",
+        class: "btn btn-primary" %>
+    <%= link_to "Cancel", initiative.new_record? ? initiatives_path : initiative_path(initiative),
+        class: "btn btn-outline-secondary" %>
+  </div>
+
+<% end %>

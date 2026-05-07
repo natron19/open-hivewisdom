@@ -1,0 +1,42 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">Your Initiatives</h1>
+  <%= link_to "New Initiative", new_initiative_path, class: "btn btn-primary" %>
+</div>
+
+<% if @initiatives.any? %>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Time Horizon</th>
+        <th>Premortems</th>
+        <th>Latest Premortem</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @initiatives.each do |initiative| %>
+        <tr>
+          <td><%= link_to initiative.name, initiative_path(initiative) %></td>
+          <td><span class="badge bg-secondary"><%= initiative.time_horizon_label %></span></td>
+          <td><%= initiative.premortems.count %></td>
+          <td>
+            <% if (latest = initiative.most_recent_premortem) %>
+              <%= latest.created_at.strftime("%b %-d, %Y") %>
+            <% else %>
+              <span class="text-body-secondary small">None yet</span>
+            <% end %>
+          </td>
+          <td class="text-end">
+            <%= link_to "View", initiative_path(initiative), class: "btn btn-sm btn-outline-secondary" %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <div class="alert alert-secondary">
+    No initiatives yet.
+    <%= link_to "Create your first initiative →", new_initiative_path %>
+  </div>
+<% end %>

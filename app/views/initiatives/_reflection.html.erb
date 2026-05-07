@@ -1,0 +1,8 @@
+<h6 class="mb-2">Your Reflection</h6>
+<%= form_with url: reflection_premortem_path(premortem), method: :patch,
+    data: { turbo_stream: true } do |f| %>
+  <%= f.text_area :reflection, value: premortem.reflection,
+      rows: 3, class: "form-control mb-2",
+      placeholder: "Add a note after reading this premortem — what resonates, what you'd push back on." %>
+  <%= f.submit "Save Reflection", class: "btn btn-sm btn-outline-secondary" %>
+<% end %>

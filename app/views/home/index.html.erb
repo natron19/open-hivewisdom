@@ -1,0 +1,52 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-7 text-center">
+
+      <h1 class="display-5 fw-bold mb-3"><%= ENV.fetch("APP_NAME", "HiveWisdom Demo") %></h1>
+      <p class="lead mb-4"><%= ENV.fetch("APP_TAGLINE", "") %></p>
+
+      <p class="text-body-secondary mb-5">
+        A premortem imagines that an initiative has already failed and asks why.
+        It is one of the highest-leverage foresight practices a team can run —
+        and the one most reliably skipped because it requires skill, time, and willingness
+        to look at failure before it happens. This tool produces a structured first draft
+        in under fifteen seconds so the team has something concrete to push back on.
+      </p>
+
+      <% if signed_in? %>
+        <%= link_to "Run Your First Premortem", new_initiative_path, class: "btn btn-primary btn-lg px-5 mb-5" %>
+      <% else %>
+        <%= link_to "Run Your First Premortem", sign_up_path, class: "btn btn-primary btn-lg px-5 mb-5" %>
+      <% end %>
+
+      <div class="row g-4 text-start mt-2">
+        <div class="col-md-4">
+          <div class="p-3 border rounded h-100">
+            <div class="fs-4 mb-2">📝</div>
+            <h6 class="fw-semibold">Describe</h6>
+            <p class="small text-body-secondary mb-0">Name the initiative and fill in five fields: what success looks like, the time horizon, where the work stands today, and who is involved.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 border rounded h-100">
+            <div class="fs-4 mb-2">💀</div>
+            <h6 class="fw-semibold">Imagine Failing</h6>
+            <p class="small text-body-secondary mb-0">The AI imagines the initiative has already failed and reconstructs — specifically and without softening — the five most plausible reasons why.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="p-3 border rounded h-100">
+            <div class="fs-4 mb-2">✅</div>
+            <h6 class="fw-semibold">Plan This Week</h6>
+            <p class="small text-body-secondary mb-0">Get a ranked list of preventive actions to take now, plus the one uncomfortable truth most premortems skip past.</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-5 text-body-secondary small">
+        Open source under MIT. This is one feature from a larger foresight platform.
+      </p>
+
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h1 class="h3 mb-1"><%= @initiative.name %></h1>
+    <span class="badge bg-secondary"><%= @initiative.time_horizon_label %></span>
+  </div>
+  <%= link_to "Edit", edit_initiative_path(@initiative), class: "btn btn-sm btn-outline-secondary" %>
+</div>
+
+<div class="card mb-4">
+  <div class="card-body">
+    <div class="row g-4">
+      <div class="col-md-6">
+        <p class="text-body-secondary small mb-1 fw-semibold">What success looks like</p>
+        <p class="mb-0"><%= @initiative.success_definition %></p>
+      </div>
+      <div class="col-md-6">
+        <p class="text-body-secondary small mb-1 fw-semibold">Current state</p>
+        <p class="mb-0"><%= @initiative.current_state %></p>
+      </div>
+      <div class="col-12">
+        <p class="text-body-secondary small mb-1 fw-semibold">Team context</p>
+        <p class="mb-0"><%= @initiative.team_context %></p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= turbo_frame_tag "premortem-frame-#{@initiative.id}" do %>
+  <% if @premortem %>
+    <div data-controller="premortem-loading">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h4 class="mb-0">Premortem</h4>
+        <div class="d-flex gap-2 align-items-center">
+          <span class="text-body-secondary small" data-premortem-loading-target="idle">
+            Run <%= @premortem.created_at.strftime("%b %-d, %Y") %>
+          </span>
+          <div data-premortem-loading-target="idle">
+            <%= button_to "Re-run Premortem", initiative_premortems_path(@initiative),
+                class: "btn btn-sm btn-outline-secondary",
+                data: { turbo_confirm: "Replace the current premortem with a new one?" },
+                form: { data: { action: "turbo:submit-start->premortem-loading#start" } } %>
+          </div>
+          <div data-premortem-loading-target="loading" class="d-none d-flex align-items-center gap-2">
+            <span class="spinner-border spinner-border-sm" style="color: var(--accent);" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </span>
+            <span class="text-body-secondary small">Running premortem&hellip;</span>
+          </div>
+        </div>
+      </div>
+      <%= render "premortem", premortem: @premortem %>
+    </div>
+  <% else %>
+    <div data-controller="premortem-loading">
+      <div data-premortem-loading-target="idle" class="card text-center py-5">
+        <div class="card-body">
+          <h5 class="card-title">Ready to run the premortem?</h5>
+          <p class="card-text text-body-secondary">Imagine this initiative has already failed. Find out why.</p>
+          <%= button_to "Run Premortem", initiative_premortems_path(@initiative),
+              class: "btn btn-primary btn-lg px-5",
+              form: { data: { action: "turbo:submit-start->premortem-loading#start" } } %>
+        </div>
+      </div>
+      <div data-premortem-loading-target="loading" class="card text-center py-5 d-none">
+        <div class="card-body">
+          <div class="spinner-border mb-3" style="color: var(--accent);" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <h5 class="card-title">Running premortem&hellip;</h5>
+          <p class="card-text text-body-secondary">Gemini is imagining how this initiative fails. Usually 15–30 seconds.</p>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% if @initiative.premortems.count > 1 %>
+  <div class="mt-4">
+    <h6 class="text-body-secondary">Previous premortems</h6>
+    <% @initiative.premortems.offset(1).each do |p| %>
+      <%= link_to p.created_at.strftime("%b %-d, %Y"), initiative_premortem_path(@initiative, p),
+          class: "badge bg-secondary text-decoration-none me-1" %>
+    <% end %>
+  </div>
+<% end %>
