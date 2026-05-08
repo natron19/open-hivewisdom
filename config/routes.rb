@@ -3,6 +3,9 @@ Rails.application.routes.draw do
 
   resources :initiatives do
     resources :premortems, only: [:create, :show]
+    member do
+      get :markdown_export
+    end
   end
 
   patch "/preventive_actions/:id/toggle", to: "preventive_actions#toggle", as: "toggle_preventive_action"

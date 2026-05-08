@@ -35,6 +35,9 @@
             Run <%= @premortem.created_at.strftime("%b %-d, %Y") %>
           </span>
           <div data-premortem-loading-target="idle">
+            <%= link_to "Download Markdown", markdown_export_initiative_path(@initiative),
+                class: "btn btn-sm btn-outline-secondary",
+                data: { turbo: false } %>
             <%= button_to "Re-run Premortem", initiative_premortems_path(@initiative),
                 class: "btn btn-sm btn-outline-secondary",
                 data: { turbo_confirm: "Replace the current premortem with a new one?" },
