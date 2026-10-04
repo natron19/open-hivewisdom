@@ -1,0 +1,17 @@
+# Per-app guardrail configuration, read by AiGuardConfig.
+# See docs/ai-guardrails.md (Layer 1b: AiOutputGuard) and docs/ai-evals.md.
+
+# Premortems are about initiatives, not personal distress, so no crisis routing.
+crisis_terms: []
+
+# Output structure rules per AiTemplate name.
+#   format:        text | json
+#   required_keys: top-level keys the JSON object must contain
+templates:
+  health_ping:
+    format: text
+  # PremortemParser + PremortemsController#create read all four keys
+  # (Date.parse on imagined_failure_date, .each on the two arrays).
+  hivewisdom_premortem_v1:
+    format: json
+    required_keys: [imagined_failure_date, failure_modes, preventive_actions, avoided_truth]
