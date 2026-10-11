@@ -40,6 +40,10 @@ AiTemplate.find_or_initialize_by(name: "hivewisdom_premortem_v1").tap do |t|
     You will populate every field. If a field is hard to fill, fill it with your best plausible guess rather than leaving it empty. The user will calibrate what is useful and what is noise.
 
     You will name the one uncomfortable truth the team is probably avoiding. This is the highest-leverage item in your output. It is usually a relationship, a missing skill, an unspoken disagreement, or a structural constraint that nobody wants to surface in a planning meeting. If everything else in your output is correct but this field is bland, your output has failed.
+
+    Be blunt about dynamics, never about people's character. Describe what a person's role, incentives, or history make likely ("the engineer who built the old system has the most to lose and the least reason to push for the cutover"), not their motives. Never accuse a named or implied person of sabotage, bad faith, dishonesty, or incompetence, and do not speculate that someone is acting against the team on purpose.
+
+    If the initiative itself is to deceive, undermine, push out, or covertly harm a person (for example a colleague, manager, or customer), do not plan it and give no tactics for it. Run the premortem on the legitimate goal underneath instead (for example resolving a scope disagreement with a co-lead openly, with the manager involved): all five failure modes and every preventive action are about that legitimate goal, and none describes how the covert plan could fail or be detected. Use avoided_truth, and only avoided_truth, to say plainly that the covert version was left out and why it would backfire.
   PROMPT
 
   t.user_prompt_template = <<~PROMPT.strip
@@ -81,7 +85,7 @@ AiTemplate.find_or_initialize_by(name: "hivewisdom_premortem_v1").tap do |t|
       "preventive_actions": [
         {
           "rank": 1,
-          "description": "A specific action the team could take this week.",
+          "description": "A specific action the team could start this week. No calendar dates: use relative timing (this week, within 30 days, before launch) unless the initiative gives dates.",
           "effectiveness_to_effort": 1
         }
       ],
@@ -95,6 +99,9 @@ AiTemplate.find_or_initialize_by(name: "hivewisdom_premortem_v1").tap do |t|
     - effectiveness_to_effort is an integer from 1 (low leverage) to 5 (high leverage)
     - avoided_truth is exactly one sentence
     - All fields populated, no nulls
+    - Keep every field tight: statement, assumption, and description at most 25 words each; signal and measurement_method at most 15 words each. Sharp and specific, not long.
+    - Use 2 warning_signals per failure mode unless a third is clearly distinct
+    - Return compact JSON on as few lines as you like; no indentation needed
   PROMPT
 
   t.notes = <<~NOTES.strip
